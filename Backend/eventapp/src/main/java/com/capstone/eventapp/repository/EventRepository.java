@@ -1,8 +1,5 @@
 package com.capstone.eventapp.repository;
 
-
-import java.util.Optional;
-
 // create interface EventRepository which extends MongoRepository
 // use Event model class and String as the type of the primary key
 
@@ -15,6 +12,3 @@ import com.capstone.eventapp.model.Event;
 public interface EventRepository extends MongoRepository<Event, String> {
 
 }
-
-
-

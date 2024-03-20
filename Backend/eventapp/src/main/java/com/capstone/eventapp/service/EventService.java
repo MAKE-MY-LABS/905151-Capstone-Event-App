@@ -19,6 +19,5 @@ public interface EventService {
 
     // create method to delete favorite event
     public void deleteFavoriteEvent(String eventId);
-    
 
 }
