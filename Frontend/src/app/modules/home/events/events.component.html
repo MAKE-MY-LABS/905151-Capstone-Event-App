@@ -1,0 +1,97 @@
+<div class="row mx-0">
+    <h3 class="mt-3">Events</h3>
+    <div class="col-md-12 text-center">
+      <input
+        type="text"
+        class="mt-1"
+        placeholder="Search"
+        #input
+        (keypress.enter)="searchEvents(input.value)"
+      />
+      <!-- add search button -->
+      <button class="btn btn-primary mx-1" (click)="searchEvents(input.value)">
+        Search
+      </button>
+      <!-- add clear button  -->
+      <button class="btn btn-danger mx-1" (click)="getAllEvents()">Clear</button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-6" *ngFor="let event of events">
+      <div class="card">
+        <!-- Card content here -->
+        <div class="card-body">
+          <h5 class="card-title">
+            <!-- add {{ selectedArticle?.title }} in a tag href as selectedArticle.url -->
+            <a [href]="selectedEvent?.url" target="_blank">{{
+              event?.title
+            }}</a>
+          </h5>
+          <p class="card-text">{{ event.description }}</p>
+          <button
+            class="btn btn-primary mx-1"
+            data-toggle="modal"
+            data-target="#articleModal"
+            (click)="showEventDetails(event)"
+          >
+            Show Details
+          </button>
+          <!-- add button for favorite -->
+          <button class="btn btn-primary mx-1" (click)="favoriteEvent(event)">
+            Add to Favorites
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Add a modal component -->
+  <div class="modal" tabindex="-1" role="dialog" id="articleModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <!-- add {{ selectedArticle?.title }} in a tag href as selectedArticle.url -->
+            <a [href]="selectedEvent?.url" target="_blank">{{
+              selectedEvent?.title
+            }}</a>
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeEventDetails()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{ selectedEvent?.description }}</p>
+          <!-- Add more details here -->
+          <p>Event Id: {{ selectedEvent?.id}}</p>
+          <p>Status: {{ selectedEvent?.status }}</p>
+          <p>Address: {{ selectedEvent?.venue?.address }}</p>
+          <p>City: {{ selectedEvent?.venue?.city }}</p>
+          <p>State: {{ selectedEvent?.venue?.state }}</p>
+          <p>Country: {{ selectedEvent?.venue?.country }}</p>
+          <p>URL: {{ selectedEvent?.url }}</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="closeEventDetails()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Existing code -->
+  
