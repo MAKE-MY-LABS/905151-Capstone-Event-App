@@ -48,8 +48,6 @@ export class EventsComponent implements OnInit {
     //   this.events = response.events || [];
     //   this.logger.debug('Event received:', this.events);
     // }); 
-
-
   }
 
   // create metthod to favorite event
@@ -58,16 +56,19 @@ export class EventsComponent implements OnInit {
    * Favorites the selected event.
    */
   favoriteEvent(event: any) {
-    if (this.selectedEvent) {
-      // this.homeService.favoriteEvent(this.selectedEvent.id).subscribe((response: { message: string }) => {
-      //   this.logger.debug('Event favorited:', response);
-      //   this.selectedEvent.isFavorited = true;
-      // });
+    this.logger.debug('Adding event to favorites:', event);
+
+    this.homeService.getFavoriteEvents().subscribe((response: IEvent[]) => {
+      const favoriteEvent: IEvent[] = response || [];
+      event.id = favoriteEvent.length + 1;
+
+      this.homeService.addFavoriteEvent(event).subscribe((response: { event: IEvent }) => {
+        // add alert to show success message
+        alert('Event added to favorites');
+        this.logger.debug('Event added to favorites:', response.event);
+      });
     }
-
-
-
-
+    );
 
   }
 
@@ -90,10 +91,5 @@ export class EventsComponent implements OnInit {
     this.selectedEvent = null;
 
   }
-
-
-
-
-
 
 }

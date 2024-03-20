@@ -24,7 +24,12 @@ export class FavoriteEventsComponent implements OnInit {
 
   // create a function to get favorite events
   getFavoriteEvents() {
-    // return this.homeService.getFavoriteEvents();
+    // Code to fetch favorite articles from the server
+    // Assign the fetched articles to the favoriteArticles array
+
+    this.homeService.getFavoriteEvents().subscribe((response: { events: IEvent[] }) => {
+      this.favoritEvents = response.events || [];
+    });
   }
 
   // creae method to close event details
@@ -38,7 +43,7 @@ export class FavoriteEventsComponent implements OnInit {
 
   }
 
-// create method to show details of event
+  // create method to show details of event
 
   /**
    * Shows the details of the selected event.
@@ -48,8 +53,8 @@ export class FavoriteEventsComponent implements OnInit {
     this.selectedEvent = event;
   }
 
-  deleteEvent(event: IEvent){
-    
+  deleteEvent(event: IEvent) {
+
   }
 
 
