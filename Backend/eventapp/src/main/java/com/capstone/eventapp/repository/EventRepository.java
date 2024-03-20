@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.capstone.eventapp.model.Event;
 
+/**
+ * The EventRepository interface is responsible for providing CRUD operations
+ * for the Event entity in the database.
+ */
 @Repository
 public interface EventRepository extends MongoRepository<Event, String> {
 

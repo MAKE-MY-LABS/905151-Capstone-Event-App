@@ -3,21 +3,46 @@ package com.capstone.eventapp.service;
 import com.capstone.eventapp.model.Event;
 import com.capstone.eventapp.model.EventList;
 
+/**
+ * The EventService interface provides methods to interact with events and favorite events.
+ */
 public interface EventService {
 
-    // craete method to find all events
+    /**
+     * Retrieves all events.
+     *
+     * @return an EventList object containing all events
+     */
     public EventList findAllEvents();
 
-    // create method to find event by id
+    /**
+     * Retrieves an event by its ID.
+     *
+     * @param eventId the ID of the event to retrieve
+     * @return the Event object with the specified ID, or null if not found
+     */
     public Event findEventById(String eventId);
 
-    // create method to save favorite event
+    /**
+     * Saves a favorite event.
+     *
+     * @param event the Event object to save as a favorite
+     * @return the saved Event object
+     */
     public Event saveFavoriteEvent(Event event);
 
-    // create method to find all favorite events
+    /**
+     * Retrieves all favorite events.
+     *
+     * @return an EventList object containing all favorite events
+     */
     public EventList findAllFavoriteEvents();
 
-    // create method to delete favorite event
+    /**
+     * Deletes a favorite event by its ID.
+     *
+     * @param eventId the ID of the favorite event to delete
+     */
     public void deleteFavoriteEvent(String eventId);
 
 }

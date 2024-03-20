@@ -11,10 +11,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Represents a list of events.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventList {
+    /**
+     * Represents a list of events.
+     */
+    /**
+     * Represents a list of events.
+     */
     private List<Event> events;
 }

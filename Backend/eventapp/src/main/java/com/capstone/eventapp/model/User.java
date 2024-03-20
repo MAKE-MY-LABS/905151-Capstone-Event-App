@@ -14,6 +14,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Represents a user in the system.
+ */
+/**
+ * Represents a user in the system.
+ */
 @Document(collection = "User")
 @Getter
 @Setter
@@ -26,7 +32,3 @@ public class User {
     private String password;
     private String mobileNumber;
 }
-
-
-
-

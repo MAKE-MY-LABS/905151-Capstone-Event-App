@@ -30,6 +30,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Represents a venue where events can take place.
+ */
 @Document(collection = "Venue")
 @Getter
 @Setter
