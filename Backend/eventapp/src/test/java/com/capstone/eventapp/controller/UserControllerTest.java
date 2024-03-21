@@ -1,5 +1,8 @@
 package com.capstone.eventapp.controller;
 
+import com.capstone.eventapp.exception.EmailIdAlreadyExistsException;
+import com.capstone.eventapp.model.User;
+import com.capstone.eventapp.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -8,15 +11,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.capstone.eventapp.exception.EmailIdAlreadyExistsException;
-import com.capstone.eventapp.model.User;
-import com.capstone.eventapp.service.UserService;
-
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class UserControllerTest {
 
@@ -31,50 +30,52 @@ public class UserControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    /**
-     * Test case to validate the user.
-     * 
-     * This method creates a user object with a test email and password. It then
-     * mocks the behavior of the userService's
-     * validateUser method to return an Optional containing the user object. The
-     * userController's validateUser method is
-     * called with the user object as a parameter. The method asserts that the HTTP
-     * status code of the response entity is
-     * HttpStatus.OK and verifies that the userService's validateUser method is
-     * called exactly once with the email and
-     * password of the user object.
-     */
     @Test
-    public void testValidateUser() {
-        User user = new User();
-        user.setEmailId("test@test.com");
-        user.setPassword("password");
-
-        when(userService.findByEmailIdAndPassword(user.getEmailId(), user.getPassword())).thenReturn(Optional.of(user));
-
-        ResponseEntity<?> result = userController.validateUser(user);
-
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        verify(userService, times(1)).findByEmailIdAndPassword(user.getEmailId(), user.getPassword());
-    }
-
-    /**
-     * Test case to verify the functionality of saving a user.
-     * 
-     * @throws EmailIdAlreadyExistsException if the email ID already exists.
-     */
-    @Test
-    public void testSaveUser() throws EmailIdAlreadyExistsException {
+    public void testSaveUser() {
         User user = new User();
         user.setEmailId("test@test.com");
         user.setPassword("password");
 
         when(userService.saveUser(any(User.class))).thenReturn(user);
 
-        ResponseEntity<?> result = userController.saveUser(user);
+        ResponseEntity<User> response = userController.saveUser(user);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(user, response.getBody());
+    }
 
-        assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals("User with emailId: test@test.com saved successfully", result.getBody());
-        verify(userService, times(1)).saveUser(user);
+    @Test
+    public void testSaveUser_EmailIdAlreadyExists() {
+        User user = new User();
+        user.setEmailId("test@test.com");
+        user.setPassword("password");
+
+        when(userService.saveUser(any(User.class))).thenThrow(EmailIdAlreadyExistsException.class);
+
+        ResponseEntity<User> response = userController.saveUser(user);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    public void testValidateUser() {
+        User user = new User();
+        user.setEmailId("test@test.com");
+        user.setPassword("password");
+
+        when(userService.findByEmailIdAndPassword(any(String.class), any(String.class))).thenReturn(Optional.of(user));
+
+        ResponseEntity<String> response = userController.validateUser(user);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testValidateUser_Unauthorized() {
+        User user = new User();
+        user.setEmailId("test@test.com");
+        user.setPassword("password");
+
+        when(userService.findByEmailIdAndPassword(any(String.class), any(String.class))).thenReturn(Optional.empty());
+
+        ResponseEntity<String> response = userController.validateUser(user);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 }
